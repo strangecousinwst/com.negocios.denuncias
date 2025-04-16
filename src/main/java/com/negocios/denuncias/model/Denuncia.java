@@ -1,6 +1,5 @@
 package com.negocios.denuncias.model;
 
-import com.negocios.denuncias.repository.DenunciaRepository;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,9 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Denuncia {
-
-    @Autowired
-    private DenunciaRepository denunciaRepository;
 
     private String id;
 
@@ -45,7 +41,6 @@ public class Denuncia {
 
     public List<Denuncia> findAll() {
         List<Denuncia> d = new ArrayList<Denuncia>();
-        denunciaRepository.findByDescricao(descricao).forEach(denuncia -> d.add(denuncia));
         return d;
     }
 

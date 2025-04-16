@@ -43,4 +43,12 @@ public class DenunciaController {
     public Denuncia create(@RequestBody @Valid String descricao) {
         return denunciaService.save(descricao);
     }
+
+    @PutMapping("/denuncias/{id}")
+    public Denuncia update(@PathVariable String id, @RequestBody @Valid String descricao) {
+        Denuncia d = denunciaService.get(id);
+        if (d == null) { throw new ResponseStatusException(HttpStatus.NOT_FOUND); }
+        d.setDescricao(descricao);
+        return d;
+    }
 }
