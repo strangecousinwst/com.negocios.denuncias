@@ -4,20 +4,18 @@ import jakarta.validation.constraints.NotEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-public class Denuncia {
-
+public class TipoDenuncia {
 
     private String id;
-
     @NotEmpty
     private String descricao;
 
-    public Denuncia() {
+    public TipoDenuncia() {
     }
-
-    public Denuncia(String id, String descricao) {
-        this.id = id;
+    public TipoDenuncia(String descricao) {
+        this.id = UUID.randomUUID().toString();
         this.descricao = descricao;
     }
 
@@ -36,10 +34,4 @@ public class Denuncia {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-
-    public List<Denuncia> findAll() {
-        List<Denuncia> d = new ArrayList<Denuncia>();
-        return d;
-    }
-
 }
