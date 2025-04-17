@@ -9,7 +9,7 @@ import java.sql.SQLException;
 @Component
 public class DbMySQL {
 
-    private static final String MYSQLDRIVER = "com.mysql.jdbc.Driver";
+    private static final String MYSQLDRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DBNAME = "efa0124_ms_denuncia";
     private static final String SERVER = "62.28.39.135:3306/";
     private static final String USER = "efa0124";
