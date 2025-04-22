@@ -17,6 +17,13 @@ import java.util.*;
 public class TipoDenunciaService {
 
 
+//    private final Map<String, TipoDenuncia> td = new HashMap<>() {{
+//        put("1", new TipoDenuncia( "Utilizador"));
+//        put("2", new TipoDenuncia("Comentário"));
+//        put("3", new TipoDenuncia("Publicação"));
+//    }};
+
+
     private DbMySQL dbMySQL;
     private ArrayList<TipoDenuncia> denuncias;
     private Connection conn;

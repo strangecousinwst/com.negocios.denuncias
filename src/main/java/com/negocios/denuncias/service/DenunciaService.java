@@ -2,8 +2,6 @@ package com.negocios.denuncias.service;
 
 import com.negocios.denuncias.database.DbMySQL;
 import com.negocios.denuncias.model.Denuncia;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -16,16 +14,11 @@ import java.util.*;
 @Service
 public class DenunciaService {
 
-    private DbMySQL dbMySQL;
-
-    private ArrayList<Denuncia> denuncias;
-
-    private Connection conn;
+    private final Connection conn;
     private PreparedStatement ps;
     private ResultSet rs;
 
     public DenunciaService(DbMySQL dbMySQL) throws SQLException {
-        this.dbMySQL = dbMySQL;
         conn = dbMySQL.getConnection();
     }
 
@@ -95,25 +88,18 @@ public class DenunciaService {
     }
 
     public void update(Denuncia d) throws SQLException {
-        String query = "UPDATE denuncia SET descricao=?, " +
-                "denunciador_id=?" +
-                "denunciado_id=?" +
-                "tipo_denuncia_id=? " +
-                "WHERE id=?";
+        String query = "UPDATE denuncia SET descricao = ?, " +
+                "denunciador_id = ?, " +
+                "denunciado_id = ?, " +
+                "tipo_denuncia_id = ?  " +
+                "WHERE id = ?";
+
         ps = conn.prepareStatement(query);
         ps.setString(1, d.getDescricao());
         ps.setInt(2, d.getDenunciadorId());
         ps.setInt(3, d.getDenunciadoId());
-        ps.setInt(4, d.getId());
+        ps.setInt(4, d.getTipoDenunciaId());
+        ps.setInt(5, d.getId());
         ps.executeUpdate();
     }
-
-
-   // public Denuncia save(@Valid String descricao) {
-   //     Denuncia d = new Denuncia();
-   //     d.setId(UUID.randomUUID().toString());
-   //     d.setDescricao(descricao);
-   //     db.put(d.getId(), d);
-   //     return d;
-   // }
 }

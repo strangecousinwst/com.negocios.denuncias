@@ -2,8 +2,6 @@ package com.negocios.denuncias.model;
 
 import jakarta.validation.constraints.NotEmpty;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class TipoDenuncia {

@@ -3,7 +3,6 @@ package com.negocios.denuncias.web;
 import com.negocios.denuncias.model.Denuncia;
 import com.negocios.denuncias.service.DenunciaService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,8 +13,11 @@ import java.util.*;
 @RestController
 public class DenunciaController {
 
-    @Autowired
-    private DenunciaService denunciaService;
+    private final DenunciaService denunciaService;
+
+    public DenunciaController(DenunciaService denunciaService) {
+        this.denunciaService = denunciaService;
+    }
 
     @GetMapping("/")
     public String hello() {
@@ -50,6 +52,7 @@ public class DenunciaController {
         Denuncia d = denunciaService.get(id);
         if (d == null) { throw new ResponseStatusException(HttpStatus.NOT_FOUND); }
         d.setDescricao(descricao);
+        denunciaService.update(d);
         return d;
     }
 }
