@@ -52,6 +52,7 @@ public class DenunciaController {
         Denuncia d = denunciaService.get(id);
         if (d == null) { throw new ResponseStatusException(HttpStatus.NOT_FOUND); }
         d.setDescricao(descricao);
+        denunciaService.update(d);
         return d;
     }
 }

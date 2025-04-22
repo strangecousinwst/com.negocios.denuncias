@@ -88,16 +88,18 @@ public class DenunciaService {
     }
 
     public void update(Denuncia d) throws SQLException {
-        String query = "UPDATE denuncia SET descricao=?, " +
-                "denunciador_id=?" +
-                "denunciado_id=?" +
-                "tipo_denuncia_id=? " +
-                "WHERE id=?";
+        String query = "UPDATE denuncia SET descricao = ?, " +
+                "denunciador_id = ?, " +
+                "denunciado_id = ?, " +
+                "tipo_denuncia_id = ?  " +
+                "WHERE id = ?";
+
         ps = conn.prepareStatement(query);
         ps.setString(1, d.getDescricao());
         ps.setInt(2, d.getDenunciadorId());
         ps.setInt(3, d.getDenunciadoId());
-        ps.setInt(4, d.getId());
+        ps.setInt(4, d.getTipoDenunciaId());
+        ps.setInt(5, d.getId());
         ps.executeUpdate();
     }
 }
