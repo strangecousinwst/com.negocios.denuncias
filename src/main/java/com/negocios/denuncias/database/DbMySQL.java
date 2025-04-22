@@ -19,7 +19,7 @@ public class DbMySQL {
     public Connection getConnection() throws SQLException {
         try {
             Class.forName(MYSQLDRIVER);
-            return DriverManager.getConnection(URL + DBNAME, USER, PASSWORD);
+            return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (Exception e) {
             throw new SQLException("Couldn't connect to database.", e);
         }

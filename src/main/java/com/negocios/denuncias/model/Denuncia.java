@@ -2,7 +2,6 @@ package com.negocios.denuncias.model;
 
 import jakarta.validation.constraints.NotEmpty;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Denuncia {

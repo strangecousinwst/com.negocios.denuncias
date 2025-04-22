@@ -3,7 +3,6 @@ package com.negocios.denuncias.web;
 import com.negocios.denuncias.model.TipoDenuncia;
 import com.negocios.denuncias.service.TipoDenunciaService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,8 +12,11 @@ import java.util.*;
 @RestController
 public class TipoDenunciaController {
 
-    @Autowired
-    private TipoDenunciaService tipoDenunciaService;
+    private final TipoDenunciaService tipoDenunciaService;
+
+    public TipoDenunciaController(TipoDenunciaService tipoDenunciaService) {
+        this.tipoDenunciaService = tipoDenunciaService;
+    }
 
     @GetMapping("/tipodenuncias")
     public Collection<TipoDenuncia> get() {

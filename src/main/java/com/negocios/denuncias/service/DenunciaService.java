@@ -2,8 +2,6 @@ package com.negocios.denuncias.service;
 
 import com.negocios.denuncias.database.DbMySQL;
 import com.negocios.denuncias.model.Denuncia;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -16,16 +14,11 @@ import java.util.*;
 @Service
 public class DenunciaService {
 
-    private DbMySQL dbMySQL;
-
-    private ArrayList<Denuncia> denuncias;
-
-    private Connection conn;
+    private final Connection conn;
     private PreparedStatement ps;
     private ResultSet rs;
 
     public DenunciaService(DbMySQL dbMySQL) throws SQLException {
-        this.dbMySQL = dbMySQL;
         conn = dbMySQL.getConnection();
     }
 
@@ -107,13 +100,4 @@ public class DenunciaService {
         ps.setInt(4, d.getId());
         ps.executeUpdate();
     }
-
-
-   // public Denuncia save(@Valid String descricao) {
-   //     Denuncia d = new Denuncia();
-   //     d.setId(UUID.randomUUID().toString());
-   //     d.setDescricao(descricao);
-   //     db.put(d.getId(), d);
-   //     return d;
-   // }
 }
