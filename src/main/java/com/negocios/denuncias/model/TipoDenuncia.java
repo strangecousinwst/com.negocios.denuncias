@@ -6,22 +6,24 @@ import java.util.UUID;
 
 public class TipoDenuncia {
 
-    private String id;
+    private int id;
     @NotEmpty
     private String descricao;
 
+
+//Construtores-----------------------------------------------
     public TipoDenuncia() {
     }
-    public TipoDenuncia(String descricao) {
-        this.id = UUID.randomUUID().toString();
+    public TipoDenuncia(int id, String descricao) {
+        this.id = id;
         this.descricao = descricao;
     }
-
-    public String getId() {
+    //------------------------------------------------------------
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
