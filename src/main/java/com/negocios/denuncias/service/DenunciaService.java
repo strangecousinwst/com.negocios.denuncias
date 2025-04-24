@@ -14,92 +14,102 @@ import java.util.*;
 @Service
 public class DenunciaService {
 
-    private final Connection conn;
-    private PreparedStatement ps;
-    private ResultSet rs;
+  private final Connection conn;
+  private PreparedStatement ps;
+  private ResultSet rs;
 
-    public DenunciaService(DbMySQL dbMySQL) throws SQLException {
-        conn = dbMySQL.getConnection();
+  public DenunciaService(DbMySQL dbMySQL) throws SQLException {
+    conn = dbMySQL.getConnection();
+  }
+
+  // private Map<String, Denuncia> db = new HashMap<>() {{
+  // put("1", new Denuncia("1", "Comentario Publicacao"));
+  // put("2", new Denuncia("2", "Foto Errada"));
+  // put("3", new Denuncia("3", "Utilizador Bot"));
+  // }};
+
+  public ArrayList<Denuncia> get() throws SQLException {
+    ArrayList<Denuncia> denuncias = new ArrayList<>();
+    String query = "SELECT * FROM denuncia";
+    ps = conn.prepareStatement(query);
+    rs = ps.executeQuery();
+    while (rs.next()) {
+      Denuncia d = new Denuncia();
+      d.setId(rs.getInt("id"));
+      d.setDescricao(rs.getString("descricao"));
+      d.setDenunciadorId(rs.getInt("denunciador_id"));
+      d.setDenunciadoId(rs.getInt("denunciado_id"));
+      d.setData(rs.getDate("data"));
+      d.setTipoDenunciaId(rs.getInt("tipo_denuncia_id"));
+      denuncias.add(d);
     }
+    return denuncias;
+  }
 
-   // private Map<String, Denuncia> db = new HashMap<>() {{
-   //     put("1", new Denuncia("1", "Comentario Publicacao"));
-   //     put("2", new Denuncia("2", "Foto Errada"));
-   //     put("3", new Denuncia("3", "Utilizador Bot"));
-   // }};
-
-    public ArrayList<Denuncia> get() throws SQLException {
-        ArrayList<Denuncia> denuncias = new ArrayList<>();
-        String query = "SELECT * FROM denuncia";
-        ps = conn.prepareStatement(query);
-        rs = ps.executeQuery();
-        while (rs.next()) {
-            Denuncia d = new Denuncia();
-            d.setId(rs.getInt("id"));
-            d.setDescricao(rs.getString("descricao"));
-            d.setDenunciadorId(rs.getInt("denunciador_id"));
-            d.setDenunciadoId(rs.getInt("denunciado_id"));
-            d.setData(rs.getDate("data"));
-            d.setTipoDenunciaId(rs.getInt("tipo_denuncia_id"));
-            denuncias.add(d);
-        }
-        return denuncias;
+  public Denuncia get(int id) throws SQLException {
+    Denuncia d = new Denuncia();
+    String query = "SELECT * FROM denuncia WHERE id = ?";
+    ps = conn.prepareStatement(query);
+    ps.setInt(1, id);
+    rs = ps.executeQuery();
+    if (rs.next()) {
+      d.setId(rs.getInt("id"));
+      d.setDescricao(rs.getString("descricao"));
+      d.setDenunciadorId(rs.getInt("denunciador_id"));
+      d.setDenunciadoId(rs.getInt("denunciado_id"));
+      d.setData(rs.getDate("data"));
+      d.setTipoDenunciaId(rs.getInt("tipo_denuncia_id"));
+      return d;
     }
+    return null;
+  }
 
-    public Denuncia get(int id) throws SQLException {
-        Denuncia d = new Denuncia();
-        String query = "SELECT * FROM denuncia WHERE id = ?";
-        ps = conn.prepareStatement(query);
-        ps.setInt(1, id);
-        rs = ps.executeQuery();
-        if (rs.next()) {
-            d.setId(rs.getInt("id"));
-            d.setDescricao(rs.getString("descricao"));
-            d.setDenunciadorId(rs.getInt("denunciador_id"));
-            d.setDenunciadoId(rs.getInt("denunciado_id"));
-            d.setData(rs.getDate("data"));
-            d.setTipoDenunciaId(rs.getInt("tipo_denuncia_id"));
-            return d;
-        }
-        return null;
-    }
+  // public Denuncia remove(int id) throws SQLException {
+  // Denuncia d = new Denuncia();
+  // String query = "DELETE FROM denuncia WHERE id = ?";
+  // ps = conn.prepareStatement(query);
+  // ps.setInt(1, id);
+  // ps.executeUpdate();
+  // return d;
+  // }
 
-    public Denuncia remove(int id) throws SQLException {
-        Denuncia d = new Denuncia();
-        String query = "DELETE FROM denuncia WHERE id = ?";
-        ps = conn.prepareStatement(query);
-        ps.setInt(1, id);
-        ps.executeUpdate();
-        return d;
-    }
+  public void remove(Denuncia d) throws SQLException {
+    String query = "UPDATE denuncia SET is_active = ? " +
+        "WHERE id = ?";
 
-    public void save(Denuncia d) throws SQLException {
-        String query = "INSERT INTO denuncia (descricao, " +
-                "denunciador_id" +
-                "denunciado_id" +
-                "tipo_denuncia_id)" +
-                "VALUES (?, ?, ?, ?)";
-        ps = conn.prepareStatement(query);
-        ps.setString(1, d.getDescricao());
-        ps.setInt(2, d.getDenunciadorId());
-        ps.setInt(3, d.getDenunciadoId());
-        ps.setInt(4, d.getTipoDenunciaId());
-        ps.executeUpdate();
-    }
+    ps = conn.prepareStatement(query);
+    ps.setBoolean(1, d.getIs_Active());
+    ps.setInt(2, d.getId());
+    ps.executeUpdate();
+  }
 
-    public void update(Denuncia d) throws SQLException {
-        String query = "UPDATE denuncia SET descricao = ?, " +
-                "denunciador_id = ?, " +
-                "denunciado_id = ?, " +
-                "tipo_denuncia_id = ?  " +
-                "WHERE id = ?";
+  public void save(Denuncia d) throws SQLException {
+    String query = "INSERT INTO denuncia (descricao, " +
+        "denunciador_id" +
+        "denunciado_id" +
+        "tipo_denuncia_id)" +
+        "VALUES (?, ?, ?, ?)";
+    ps = conn.prepareStatement(query);
+    ps.setString(1, d.getDescricao());
+    ps.setInt(2, d.getDenunciadorId());
+    ps.setInt(3, d.getDenunciadoId());
+    ps.setInt(4, d.getTipoDenunciaId());
+    ps.executeUpdate();
+  }
 
-        ps = conn.prepareStatement(query);
-        ps.setString(1, d.getDescricao());
-        ps.setInt(2, d.getDenunciadorId());
-        ps.setInt(3, d.getDenunciadoId());
-        ps.setInt(4, d.getTipoDenunciaId());
-        ps.setInt(5, d.getId());
-        ps.executeUpdate();
-    }
+  public void update(Denuncia d) throws SQLException {
+    String query = "UPDATE denuncia SET descricao = ?, " +
+        "denunciador_id = ?, " +
+        "denunciado_id = ?, " +
+        "tipo_denuncia_id = ?  " +
+        "WHERE id = ?";
+
+    ps = conn.prepareStatement(query);
+    ps.setString(1, d.getDescricao());
+    ps.setInt(2, d.getDenunciadorId());
+    ps.setInt(3, d.getDenunciadoId());
+    ps.setInt(4, d.getTipoDenunciaId());
+    ps.setInt(5, d.getId());
+    ps.executeUpdate();
+  }
 }
