@@ -50,6 +50,8 @@ public class TipoDenunciaService {
             TipoDenuncia td = new TipoDenuncia();
             td.setId(rs.getInt("id"));
             td.setDescricao(rs.getString("descricao"));
+            td.setIs_Active(rs.getBoolean("is_active"));
+
             tipodenuncias.add(td);
         }
         return tipodenuncias;
@@ -64,6 +66,7 @@ public class TipoDenunciaService {
         while (rs.next()) {
             td.setId(rs.getInt("id"));
             td.setDescricao(rs.getString("descricao"));
+            td.setIs_Active(rs.getBoolean("is_active"));
         }
         return td ;
     }
@@ -85,11 +88,24 @@ public class TipoDenunciaService {
     }
 
     public void update(TipoDenuncia td) throws SQLException {
-        String query = "UPDATE tipo_denuncia SET descricao = ? WHERE id = ?";
+        String query = "UPDATE tipo_denuncia SET descricao = ?, SET is_active = ? WHERE id = ?";
         ps = conn.prepareStatement(query);
         ps.setString(1, td.getDescricao());
         ps.setInt(2, td.getId());
+        ps.setBoolean(3, td.getIs_Active());
         ps.executeUpdate();
+    }
+
+    public void deactivate(TipoDenuncia td) throws SQLException {
+        String query = "UPDATE tipo_denuncia SET is_active = ? " +
+                "WHERE id = ?";
+
+        ps = conn.prepareStatement(query);
+        ps.setBoolean(1, td.getIs_Active());
+        ps.setInt(2, td.getId());
+        ps.executeUpdate();
+
+
     }
 //    public TipoDenuncia save(@Valid String descricao) {
 //        TipoDenuncia novoTipo = new TipoDenuncia();
