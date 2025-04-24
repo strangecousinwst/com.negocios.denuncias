@@ -1,6 +1,5 @@
 package com.negocios.denuncias.web;
 
-import com.negocios.denuncias.model.Denuncia;
 import com.negocios.denuncias.model.TipoDenuncia;
 import com.negocios.denuncias.service.TipoDenunciaService;
 import jakarta.validation.Valid;
@@ -32,10 +31,15 @@ public class TipoDenunciaController {
         return td;
     }
 
-    @DeleteMapping("/tipodenuncias/{id}")
-    public void delete(@PathVariable int id) throws SQLException {
-        TipoDenuncia td = tipoDenunciaService.remove(id);
-        if (td == null) { throw new ResponseStatusException(HttpStatus.NOT_FOUND); }
+    @PutMapping("/tipodenunciasdeactivate/{id}")
+    public TipoDenuncia deactivate(@PathVariable int id) throws SQLException {
+        TipoDenuncia td = tipoDenunciaService.get(id);
+        if (td == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        td.setIs_Active(false);
+        tipoDenunciaService.deactivate(td);
+        return td;
     }
 
     @PostMapping("/tipodenuncias")
@@ -48,6 +52,7 @@ public class TipoDenunciaController {
         TipoDenuncia td = tipoDenunciaService.get(id);
         if (td == null) { throw new ResponseStatusException(HttpStatus.NOT_FOUND); }
         td.setDescricao(descricao);
+        tipoDenunciaService.update(td);
         return td;
     }
 }
