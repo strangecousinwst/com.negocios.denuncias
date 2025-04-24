@@ -22,6 +22,7 @@ public class DenunciaService {
     conn = dbMySQL.getConnection();
   }
 
+  // "bases de dados" para efeitos de teste
   // private Map<String, Denuncia> db = new HashMap<>() {{
   // put("1", new Denuncia("1", "Comentario Publicacao"));
   // put("2", new Denuncia("2", "Foto Errada"));
@@ -41,6 +42,7 @@ public class DenunciaService {
       d.setDenunciadoId(rs.getInt("denunciado_id"));
       d.setData(rs.getDate("data"));
       d.setTipoDenunciaId(rs.getInt("tipo_denuncia_id"));
+      d.setIsActive(rs.getBoolean("is_active"));
       denuncias.add(d);
     }
     return denuncias;
@@ -59,11 +61,15 @@ public class DenunciaService {
       d.setDenunciadoId(rs.getInt("denunciado_id"));
       d.setData(rs.getDate("data"));
       d.setTipoDenunciaId(rs.getInt("tipo_denuncia_id"));
+      d.setIsActive(rs.getBoolean("is_active"));
       return d;
     }
     return null;
   }
 
+  // Por questões de coerência dos dados
+  // optamos por tornar uma denuncia "não ativa"
+  // em vez de a remover
   // public Denuncia remove(int id) throws SQLException {
   // Denuncia d = new Denuncia();
   // String query = "DELETE FROM denuncia WHERE id = ?";
@@ -78,7 +84,7 @@ public class DenunciaService {
         "WHERE id = ?";
 
     ps = conn.prepareStatement(query);
-    ps.setBoolean(1, d.getIs_Active());
+    ps.setBoolean(1, d.getIsActive());
     ps.setInt(2, d.getId());
     ps.executeUpdate();
   }
@@ -88,12 +94,13 @@ public class DenunciaService {
         "denunciador_id" +
         "denunciado_id" +
         "tipo_denuncia_id)" +
-        "VALUES (?, ?, ?, ?)";
+        "VALUES (?, ?, ?, ?, ?)";
     ps = conn.prepareStatement(query);
     ps.setString(1, d.getDescricao());
     ps.setInt(2, d.getDenunciadorId());
     ps.setInt(3, d.getDenunciadoId());
     ps.setInt(4, d.getTipoDenunciaId());
+    ps.setBoolean(5, d.getIsActive());
     ps.executeUpdate();
   }
 
@@ -101,7 +108,8 @@ public class DenunciaService {
     String query = "UPDATE denuncia SET descricao = ?, " +
         "denunciador_id = ?, " +
         "denunciado_id = ?, " +
-        "tipo_denuncia_id = ?  " +
+        "tipo_denuncia_id = ?,  " +
+        "is_active = ?  " +
         "WHERE id = ?";
 
     ps = conn.prepareStatement(query);
@@ -109,7 +117,8 @@ public class DenunciaService {
     ps.setInt(2, d.getDenunciadorId());
     ps.setInt(3, d.getDenunciadoId());
     ps.setInt(4, d.getTipoDenunciaId());
-    ps.setInt(5, d.getId());
+    ps.setBoolean(5, d.getIsActive());
+    ps.setInt(6, d.getId());
     ps.executeUpdate();
   }
 }

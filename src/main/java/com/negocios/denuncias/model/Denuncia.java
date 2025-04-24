@@ -79,7 +79,7 @@ public class Denuncia {
     this.tipoDenunciaId = tipoDenunciaId;
   }
 
-  public boolean getIs_Active() {
+  public boolean getIsActive() {
     return is_active;
   }
 

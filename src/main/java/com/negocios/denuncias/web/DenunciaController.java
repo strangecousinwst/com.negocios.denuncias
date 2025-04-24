@@ -38,7 +38,7 @@ public class DenunciaController {
     return d;
   }
 
-  @PutMapping("/denuncias/{id}")
+  @PutMapping("/denuncias/status/{id}")
   public Denuncia delete(@PathVariable int id) throws SQLException {
     Denuncia d = denunciaService.get(id);
     if (d == null) {
